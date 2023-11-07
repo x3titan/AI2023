@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.34114.132
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "AI2023", "AI2023.pyproj", "{C38B51EC-CC39-46E6-A6FC-0B9BDC7056B8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C38B51EC-CC39-46E6-A6FC-0B9BDC7056B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C38B51EC-CC39-46E6-A6FC-0B9BDC7056B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D334CC2A-D03C-44A1-9591-A97D6E1CC626}
+	EndGlobalSection
+EndGlobal

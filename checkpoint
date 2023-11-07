@@ -1,0 +1,2 @@
+model_checkpoint_path: "v1.txt"
+all_model_checkpoint_paths: "v1.txt"
