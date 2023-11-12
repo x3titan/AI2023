@@ -11,7 +11,7 @@
     <OutputPath>.</OutputPath>
     <Name>AI2023</Name>
     <RootNamespace>AI2023</RootNamespace>
-    <InterpreterId>Global|VisualStudio|tf</InterpreterId>
+    <InterpreterId>Global|VisualStudio|tf2</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,7 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="CondaEnv|CondaEnv|env" />
-    <InterpreterReference Include="Global|VisualStudio|tf" />
+    <InterpreterReference Include="Global|VisualStudio|tf2" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
