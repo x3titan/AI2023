@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>c38b51ec-cc39-46e6-a6fc-0b9bdc7056b8</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>AI2023.py</StartupFile>
+    <StartupFile>TamEmail.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -23,6 +23,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AI2023.py" />
+    <Compile Include="TamEmail.py" />
     <Compile Include="pub\tamPub1.py" />
     <Compile Include="pub\__init__.py" />
     <Compile Include="t3.py" />
