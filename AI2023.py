@@ -38,15 +38,30 @@ def getIntDigit(intNumber: int, n: int):
     return (intNumber // 10 ** n) % 10
 
 
-physical_devices = tf.config.list_physical_devices('GPU')
-if physical_devices:
-    # 设置 TensorFlow 可见的设备为 GPU（或 CPU）
-    tf.config.experimental.set_visible_devices(physical_devices[0], 'GPU')
-    print("使用GPU")
+#physical_devices = tf.config.list_physical_devices('GPU')
+physical_devices = tf.config.experimental.list_physical_devices()
+
+print("Num GPUs:", len(physical_devices))
+print("Available devices:", physical_devices)
+
+# 找到 DML 设备
+dml_devices = [d for d in physical_devices if 'DML' in d.name]
+
+# 设置 DML 设备为可见（假设我们想使用第一个 DML 设备）
+if dml_devices:  # 确保有 DML 设备可用
+    print("Use DML device 0 ", dml_devices[0])
+    tf.config.experimental.set_visible_devices(dml_devices[0], 'DML')
 else:
-    # 如果没有 GPU，则设置 TensorFlow 可见的设备为 CPU
-    tf.config.experimental.set_visible_devices([], 'CPU')
-    print("警告：找不到GPU使用CPU")
+    print("No DML devices found")
+
+# if physical_devices:
+#     # 设置 TensorFlow 可见的设备为 GPU（或 CPU）
+#     tf.config.experimental.set_visible_devices(physical_devices[0], 'GPU')
+#     print("使用GPU")
+# else:
+#     # 如果没有 GPU，则设置 TensorFlow 可见的设备为 CPU
+#     tf.config.experimental.set_visible_devices([], 'CPU')
+#     print("警告：找不到GPU使用CPU")
 
 #====================================================================
 #999*999的测试乘法模型
@@ -60,15 +75,16 @@ currentDir = os.path.dirname(os.path.abspath(__file__))
 file_path = currentDir + r"\dnnSave\ai2023.tmp"
 if os.path.exists(file_path):
     #shutil.rmtree(file_path);
-    print(f"文件 {file_path} 已被删除。")
+    dnn = tf.keras.models.load_model(file_path)
+    print(f"载入模型文件: {file_path}")
 else:
     print(f"文件 {file_path} 不存在，无需删除。")
 
 # 训练模型
 losses = []
 for i in range(0,5000):
-    tIn = np.zeros((1000, 60), dtype=float)
-    tOut = np.zeros((1000, 1), dtype=float)
+    tIn = np.zeros((10000, 60), dtype=float)
+    tOut = np.zeros((10000, 1), dtype=float)
     for stackCount in range(0,1000): #堆叠一批100个乘法的例子
         a = np.random.randint(0, 999)
         b = np.random.randint(0, 999)
@@ -79,8 +95,6 @@ for i in range(0,5000):
         tOut[stackCount, 0] = a * b / 1000 / 1000
     
     print(f'产生数据完成，开始训练，第{i}批')
-    if os.path.exists(file_path):
-        dnn = tf.keras.models.load_model(file_path)
     
     #0：不显示训练进度信息。
     #1：显示一个进度条，每个训练周期结束时显示一行训练进度信息。
