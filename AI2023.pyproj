@@ -4,14 +4,14 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>c38b51ec-cc39-46e6-a6fc-0b9bdc7056b8</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>AI2023.py</StartupFile>
+    <StartupFile>multiDig.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>AI2023</Name>
     <RootNamespace>AI2023</RootNamespace>
-    <InterpreterId>CondaEnv|CondaEnv|tf-directml</InterpreterId>
+    <InterpreterId>Global|VisualStudio|tf-directml</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,6 +23,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AI2023.py" />
+    <Compile Include="multiDig.py" />
     <Compile Include="TamEmail.py" />
     <Compile Include="pub\tamPub1.py" />
     <Compile Include="pub\__init__.py" />
@@ -39,6 +40,7 @@
   <ItemGroup>
     <InterpreterReference Include="CondaEnv|CondaEnv|tf-directml" />
     <InterpreterReference Include="Global|VisualStudio|miniconda3" />
+    <InterpreterReference Include="Global|VisualStudio|tf-directml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

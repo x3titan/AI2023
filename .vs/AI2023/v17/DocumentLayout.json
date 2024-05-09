@@ -3,15 +3,19 @@
   "WorkspaceRootPath": "D:\\Tam\\githubDesktop\\AI2023\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C38B51EC-CC39-46E6-A6FC-0B9BDC7056B8}|AI2023.pyproj|D:\\Tam\\githubDesktop\\AI2023\\AI2023.py||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{C38B51EC-CC39-46E6-A6FC-0B9BDC7056B8}|AI2023.pyproj|solutionrelative:AI2023.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{C38B51EC-CC39-46E6-A6FC-0B9BDC7056B8}|AI2023.pyproj|D:\\Tam\\githubDesktop\\AI2023\\multiDig.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{C38B51EC-CC39-46E6-A6FC-0B9BDC7056B8}|AI2023.pyproj|solutionrelative:multiDig.py||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{00000000-0000-0000-0000-000000000000}|\u003CSolution\u003E|AI2023||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+      "AbsoluteMoniker": "D:0:0:{C38B51EC-CC39-46E6-A6FC-0B9BDC7056B8}|AI2023.pyproj|D:\\Tam\\githubDesktop\\AI2023\\pub\\tamPub1.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{C38B51EC-CC39-46E6-A6FC-0B9BDC7056B8}|AI2023.pyproj|solutionrelative:pub\\tamPub1.py||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C38B51EC-CC39-46E6-A6FC-0B9BDC7056B8}|AI2023.pyproj|D:\\Tam\\githubDesktop\\AI2023\\TamEmail.py||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{C38B51EC-CC39-46E6-A6FC-0B9BDC7056B8}|AI2023.pyproj|solutionrelative:TamEmail.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00000000-0000-0000-0000-000000000000}|\u003CSolution\u003E|AI2023||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
     }
   ],
   "DocumentGroupContainers": [
@@ -21,7 +25,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -33,20 +37,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "AI2023.py",
-              "DocumentMoniker": "D:\\Tam\\githubDesktop\\AI2023\\AI2023.py",
-              "RelativeDocumentMoniker": "AI2023.py",
-              "ToolTip": "D:\\Tam\\githubDesktop\\AI2023\\AI2023.py",
-              "RelativeToolTip": "AI2023.py",
-              "ViewState": "AQIAADwAAAAAAAAAAAAAAE0AAAAvAAAA",
+              "DocumentIndex": 1,
+              "Title": "tamPub1.py",
+              "DocumentMoniker": "D:\\Tam\\githubDesktop\\AI2023\\pub\\tamPub1.py",
+              "RelativeDocumentMoniker": "pub\\tamPub1.py",
+              "ToolTip": "D:\\Tam\\githubDesktop\\AI2023\\pub\\tamPub1.py",
+              "RelativeToolTip": "pub\\tamPub1.py",
+              "ViewState": "AQIAAB4AAAAAAAAAAAAAADcAAAA5AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
-              "WhenOpened": "2024-05-03T06:41:01.931Z",
+              "WhenOpened": "2024-05-08T22:44:04.256Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
+              "Title": "multiDig.py",
+              "DocumentMoniker": "D:\\Tam\\githubDesktop\\AI2023\\multiDig.py",
+              "RelativeDocumentMoniker": "multiDig.py",
+              "ToolTip": "D:\\Tam\\githubDesktop\\AI2023\\multiDig.py",
+              "RelativeToolTip": "multiDig.py",
+              "ViewState": "AQIAAEkAAAAAAAAAAAAAAGQAAABMAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
+              "WhenOpened": "2024-05-08T07:00:24.882Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "AI2023",
               "DocumentMoniker": "D:\\Tam\\githubDesktop\\AI2023\\AI2023.pyproj",
               "RelativeDocumentMoniker": "AI2023.pyproj",
@@ -65,7 +82,8 @@
               "RelativeToolTip": "TamEmail.py",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAB4AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
-              "WhenOpened": "2023-12-05T05:04:20.64Z"
+              "WhenOpened": "2023-12-05T05:04:20.64Z",
+              "EditorCaption": ""
             }
           ]
         }

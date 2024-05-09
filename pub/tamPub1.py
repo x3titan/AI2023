@@ -56,3 +56,16 @@ def getMultiDnnV2(nodeCount = [100,50,10]):
     #dnn.add(tf.keras.layers.Dense(units=nodeCount[-1], activation='softmax'))
     dnn.add(tf.keras.layers.Dense(units=nodeCount[-1], activation='linear'))
     return dnn
+
+
+def getMultiDnnV3(nodeCount = [100,50,10], midLayerType = "relu", outputLayerType = "linear"):
+    dnn = tf.keras.Sequential()
+    # 添加输入层
+    dnn.add(tf.keras.layers.Input(shape=(nodeCount[0],)))
+    # 添加隐藏层
+    for i in range(1,len(nodeCount)-1):
+        dnn.add(tf.keras.layers.Dense(units=nodeCount[i], activation=midLayerType))
+    # 添加输出层
+    #dnn.add(tf.keras.layers.Dense(units=nodeCount[-1], activation='softmax'))
+    dnn.add(tf.keras.layers.Dense(units=nodeCount[-1], activation=outputLayerType))
+    return dnn
