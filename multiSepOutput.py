@@ -1,5 +1,8 @@
 ﻿#预测乘法，三位数乘以三位数，结果为6位数
-#输入为010000000类型表示一位十进制数字，输出也是一样，总共60个神经元，代表6位数字
+#共享输入层，中间分叉为6个独立的输出层，分别代码6位
+#测试下来效果不怎么好
+
+import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 import numpy as np
@@ -110,14 +113,48 @@ else:
 # 999*999的测试乘法模型
 # 输入10*6=60
 # 输出1*60
-dnn = generateLayerDnn(60, 60, 6)
-dnn.compile(optimizer='adam',
-    loss='binary_crossentropy',  # 更换为适合多标签分类的损失函数
-    metrics=['accuracy'])
+from tensorflow.keras.models import Model
+from tensorflow.keras.layers import Input, Dense, Dropout, BatchNormalization, Activation
+from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
+from tensorflow.keras.optimizers import Adam
+
+input_layer = Input(shape=(60,))
+x = Dense(40, activation='relu')(input_layer)
+x = BatchNormalization()(x)
+x = Activation('relu')(x)
+#x = Dense(60, activation='relu')(x)
+#x = Dropout(0.5)(x)  # 增加Dropout防止过拟合
+# 创建独立输出
+outputLayers = []
+for i in range(6):
+    digit_dense = Dense(30, activation='relu')(x)
+    #digit_dense = Dropout(0.3)(digit_dense)
+    #digit_dense = Dense(40, activation='relu')(digit_dense)
+    #digit_dense = Dropout(0.3)(digit_dense)
+    digit_dense = Dense(20, activation='relu')(digit_dense)
+    #digit_dense = Dense(20, activation='relu')(digit_dense)
+    digit_output = Dense(10, activation='softmax', name=f'digit_{i}')(digit_dense)
+    outputLayers.append(digit_output)
+
+# 构建模型
+dnn = Model(inputs=input_layer, outputs=outputLayers)
+# 编译模型
+dnn.compile(optimizer=Adam(learning_rate=0.0005),
+            loss='categorical_crossentropy',
+            metrics=['accuracy'],
+            loss_weights=[0.2, 0.2, 0.2, 0.2, 0.2, 0.2])  # 根据位的重要性分配权重
+# dnn.compile(optimizer='adam',
+#               loss=['categorical_crossentropy'] * 6,
+#               metrics=['accuracy'],
+#               loss_weights=[0.2, 0.3, 0.3, 0.3, 0.3, 0.3])  # 假设我们根据位的重要性分配了不同的权重
+# dnn.compile(optimizer='adam',
+#               loss=['categorical_crossentropy'] * 6,
+#               metrics=['accuracy'])
+#dnn.summary()
 
 currentDir = os.path.dirname(os.path.abspath(__file__))
 
-file_path = currentDir + r"\dnnSave\multiDig2.tmp"
+file_path = currentDir + r"\dnnSave\multiSepOutput.tmp"
 if os.path.exists(file_path):
     #shutil.rmtree(file_path);
     dnn = tf.keras.models.load_model(file_path)
@@ -130,15 +167,23 @@ else:
 loss_history = []
 batchSize = 1000
 #初始化图形
-plt.ion()
-fig, ax = plt.subplots()
-plt.title("Training Loss")
-plt.xlabel("Batch")
-plt.ylabel("Loss")
-line, = ax.plot([], []) 
+#plt.ion()
+fig, axs = plt.subplots(3, 2, figsize=(20, 10))  # 创建六个子图
+axs = axs.flatten()  # 将axs数组扁平化，便于索引
+lines = [ax.plot([], [])[0] for ax in axs]  # 创建每个子图的line对象
+dig = 0
+for ax in axs:
+    ax.set_title(f'DIG {dig}')
+    ax.set_xlabel('Batch')
+    ax.set_ylabel('Loss')
+    dig+=1
+plt.tight_layout()
+plt.show(block=False)
+
+
 for i in range(0, 5000):
     tIn = np.zeros((batchSize, 60), dtype=float)
-    tOut = np.zeros((batchSize, 60), dtype=float)
+    tOut =[np.zeros((batchSize, 10), dtype=float) for _ in range(6)]
     for batchIndex in range(0, batchSize):  # 堆叠一批batchSize个乘法的例子
         a = np.random.randint(0, 999)
         b = np.random.randint(0, 999)
@@ -147,28 +192,41 @@ for i in range(0, 5000):
         for n in range(0, 3):
             tIn[batchIndex, getIntDigit(b, n) + n * 10 + 30] = 1
         for n in range(0, 6):
-            tOut[batchIndex, getIntDigit(a * b, n) + n * 10] = 1
+            tOut[n][batchIndex, getIntDigit(a * b, n)] = 1
 
     print(f"产生数据完成，开始训练，第{i}批")
 
     # 0：不显示训练进度信息。
     # 1：显示一个进度条，每个训练周期结束时显示一行训练进度信息。
     # 2：每个训练周期结束时显示一行训练进度信息，包括每个 epoch 的平均损失和度量指
-    dnn.fit(tIn, tOut, epochs=10, verbose=0)
-    
-    #收集loss
+    #dnn.fit(tIn, tOut, epochs=10, verbose=0)
+    dnn.fit(tIn, tOut,
+        epochs=100,
+        batch_size=batchSize,
+        verbose=0)
+
+    #收集loss, 格式：总loss, d0 loss, d1 loss, ..... d5loss, d0 acc, ... d5 acc
     loss = dnn.evaluate(tIn, tOut)
     loss_history.append(loss)
-    print(f"Loss: {loss}")
+    print(f"Loss: {loss[0]}")
     
     #图形显示loss
-    line.set_xdata(range(len(loss_history)))  # 更新线的X数据
-    line.set_ydata([row[0] for row in loss_history])  # 更新线的数据
-    ax.relim()  # 重新计算轴的限制
-    ax.autoscale_view(True, True, True)  # 自动缩放
-    fig.canvas.draw()  # 更新画布
-    fig.canvas.flush_events()  # 处理GUI事件
-    plt.pause(0.1)  # 暂停一会儿，以便更新图表
+    for i in range(6):
+        lines[i].set_xdata(range(len(loss_history)))
+        lines[i].set_ydata([row[i+1] for row in loss_history])
+        axs[i].relim()
+        axs[i].autoscale_view(True, True, True)
+
+    fig.canvas.draw()
+    fig.canvas.flush_events()
+    
+    # line.set_xdata(range(len(loss_history)))  # 更新线的X数据
+    # line.set_ydata([row[0] for row in loss_history])  # 更新线的数据
+    # ax.relim()  # 重新计算轴的限制
+    # ax.autoscale_view(True, True, True)  # 自动缩放
+    # fig.canvas.draw()  # 更新画布
+    # fig.canvas.flush_events()  # 处理GUI事件
+    #plt.pause(0.1)  # 暂停一会儿，以便更新图表
 
     dnn.save(file_path)  # 根据实际模型文件名修改
 
@@ -189,7 +247,7 @@ for i in range(0, 5000):
     for stackIndex in range(0, 5):
         for n in range(0, 6):
             tOutReal[stackIndex, 0] += (10**n) * np.argmax(
-                pred[stackIndex, n * 10 : (n + 1) * 10]
+                pred[n][stackIndex, :]
             )
     for stackIndex in range(0, 5):  # 仅验证5个
         print(

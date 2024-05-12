@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\Tam\\githubDesktop\\AI2023\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{C38B51EC-CC39-46E6-A6FC-0B9BDC7056B8}|AI2023.pyproj|D:\\Tam\\githubDesktop\\AI2023\\multiFullSep.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{C38B51EC-CC39-46E6-A6FC-0B9BDC7056B8}|AI2023.pyproj|solutionrelative:multiFullSep.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{C38B51EC-CC39-46E6-A6FC-0B9BDC7056B8}|AI2023.pyproj|D:\\Tam\\githubDesktop\\AI2023\\multiDig.py||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{C38B51EC-CC39-46E6-A6FC-0B9BDC7056B8}|AI2023.pyproj|solutionrelative:multiDig.py||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
@@ -25,7 +29,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -37,33 +41,46 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "multiFullSep.py",
+              "DocumentMoniker": "D:\\Tam\\githubDesktop\\AI2023\\multiFullSep.py",
+              "RelativeDocumentMoniker": "multiFullSep.py",
+              "ToolTip": "D:\\Tam\\githubDesktop\\AI2023\\multiFullSep.py",
+              "RelativeToolTip": "multiFullSep.py",
+              "ViewState": "AQIAAGMAAAAAAAAAAAAAAG4AAAAQAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
+              "WhenOpened": "2024-05-11T22:00:00.723Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "multiDig.py",
+              "DocumentMoniker": "D:\\Tam\\githubDesktop\\AI2023\\multiDig.py",
+              "RelativeDocumentMoniker": "multiDig.py",
+              "ToolTip": "D:\\Tam\\githubDesktop\\AI2023\\multiDig.py",
+              "RelativeToolTip": "multiDig.py",
+              "ViewState": "AQIAAFQAAAAAAAAAAAAAAGAAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
+              "WhenOpened": "2024-05-11T06:53:05.55Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "tamPub1.py",
               "DocumentMoniker": "D:\\Tam\\githubDesktop\\AI2023\\pub\\tamPub1.py",
               "RelativeDocumentMoniker": "pub\\tamPub1.py",
               "ToolTip": "D:\\Tam\\githubDesktop\\AI2023\\pub\\tamPub1.py",
               "RelativeToolTip": "pub\\tamPub1.py",
-              "ViewState": "AQIAAB4AAAAAAAAAAAAAADcAAAA5AAAA",
+              "ViewState": "AQIAACEAAAAAAAAAAAAAAEYAAAAOAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
               "WhenOpened": "2024-05-08T22:44:04.256Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "multiDig.py",
-              "DocumentMoniker": "D:\\Tam\\githubDesktop\\AI2023\\multiDig.py",
-              "RelativeDocumentMoniker": "multiDig.py",
-              "ToolTip": "D:\\Tam\\githubDesktop\\AI2023\\multiDig.py",
-              "RelativeToolTip": "multiDig.py",
-              "ViewState": "AQIAAEkAAAAAAAAAAAAAAGQAAABMAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
-              "WhenOpened": "2024-05-08T07:00:24.882Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "AI2023",
               "DocumentMoniker": "D:\\Tam\\githubDesktop\\AI2023\\AI2023.pyproj",
               "RelativeDocumentMoniker": "AI2023.pyproj",
@@ -74,7 +91,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "TamEmail.py",
               "DocumentMoniker": "D:\\Tam\\githubDesktop\\AI2023\\TamEmail.py",
               "RelativeDocumentMoniker": "TamEmail.py",
@@ -82,8 +99,7 @@
               "RelativeToolTip": "TamEmail.py",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAB4AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
-              "WhenOpened": "2023-12-05T05:04:20.64Z",
-              "EditorCaption": ""
+              "WhenOpened": "2023-12-05T05:04:20.64Z"
             }
           ]
         }

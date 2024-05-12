@@ -1,5 +1,7 @@
 ﻿#预测乘法，三位数乘以三位数，结果为6位数
-#输入为010000000类型表示一位十进制数字，输出也是一样，总共60个神经元，代表6位数字
+#完全独立的6张网络，分别预测6位数字
+
+import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 import numpy as np
@@ -9,59 +11,14 @@ import sys
 import os
 import shutil
 
-
-def generateDnn(timeStep):
-    # 产生DNN网络
-    Y = tf.placeholder(tf.float32, shape=[None, 2])
-    X = tf.placeholder(tf.float32, shape=[None, timeStep * 10 + 48 * 10 * 3])
-    # DnnOut, KeepProb = tamPub1.getMultDnn(X, [2400, 1380, 792, 475, 285, 171,
-    # 102, 61, 36, 22, 12, 7, 4], True) #采用黄金分割方案
-    DnnOut, KeepProb = tamPub1.getMultDnn(
-        X,
-        [
-            2440,
-            4000,
-            4000,
-            2800,
-            1940,
-            1164,
-            690,
-            475,
-            285,
-            171,
-            102,
-            61,
-            36,
-            22,
-            12,
-            7,
-            4,
-            2,
-        ],
-        True,
-    )  # 采用黄金分割方案
-
-    # 损失函数
-    Loss = tf.reduce_sum(tf.square(DnnOut - Y)) * 30
-    # Loss = Loss * Loss
-    TrainOp = tf.train.AdamOptimizer(0.3).minimize(Loss)  # 1e-5
-    ResultAi = DnnOut
-    return X, Y, KeepProb, TrainOp, Loss, ResultAi
-
-
-def generateGoldenDnn(inputSize, outputSize):
+def generateGoldenDnn(inputSize, outputSize, inputArg = "relu", outputArg = "softmax"):
     aiArray = [inputSize]
     decrementFactor = 0.62  # 黄金分割
     while round(aiArray[-1] * decrementFactor) > outputSize:
         aiArray.append(round(aiArray[-1] * decrementFactor))
     aiArray.append(outputSize)
-
-    dnn = tamPub1.getMultiDnnV2(aiArray)
-    # dnn.compile(optimizer='adam',
-    #    loss='sparse_categorical_crossentropy', # 适用于分类问题
-    #    metrics=['accuracy'])
+    dnn = tamPub1.getMultiDnnV3(aiArray, inputArg, outputArg)
     return dnn
-
 
 def generateLayerDnn(inputSize, outputSize, layerCount):
     aiArray = [inputSize]
@@ -105,40 +62,70 @@ else:
 #     # 如果没有 GPU，则设置 TensorFlow 可见的设备为 CPU
 #     tf.config.experimental.set_visible_devices([], 'CPU')
 #     print("警告：找不到GPU使用CPU")
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout, BatchNormalization
+dnns = []
+for i in range(6):
+    #dnn = generateGoldenDnn(60, 10, "relu", "softmax")
+    dnn = Sequential([
+        Dense(37, activation='relu', input_shape=(60,)),
+        BatchNormalization(),
+        Dropout(0.2),
+        Dense(23, activation='relu'),
+        BatchNormalization(),
+        Dropout(0.2),
+        Dense(14, activation='relu'),
+        BatchNormalization(),
+        Dropout(0.2),
+        Dense(10, activation='softmax')
+    ])
+    dnns.append(dnn)
+    dnn.compile(optimizer='adam',
+        loss='categorical_crossentropy',  # 更换为适合多标签分类的损失函数
+        metrics=['accuracy'])
 
-# ====================================================================
-# 999*999的测试乘法模型
-# 输入10*6=60
-# 输出1*60
-dnn = generateLayerDnn(60, 60, 6)
-dnn.compile(optimizer='adam',
-    loss='binary_crossentropy',  # 更换为适合多标签分类的损失函数
-    metrics=['accuracy'])
+# dnn.compile(optimizer=Adam(learning_rate=0.0005),
+#             loss='categorical_crossentropy',
+#             metrics=['accuracy'],
+#             loss_weights=[0.2, 0.2, 0.2, 0.2, 0.2, 0.2])  # 根据位的重要性分配权重
+dnns[0].summary()
+
 
 currentDir = os.path.dirname(os.path.abspath(__file__))
+file_name_with_extension = os.path.basename(__file__)
+file_name_without_extension = os.path.splitext(file_name_with_extension)[0]
 
-file_path = currentDir + r"\dnnSave\multiDig2.tmp"
-if os.path.exists(file_path):
-    #shutil.rmtree(file_path);
-    dnn = tf.keras.models.load_model(file_path)
-    print(f"载入模型文件: {file_path}")
+saveFileNames = [];
+for i in range(len(dnns)):
+    saveFileNames.append(currentDir + "\\dnnSave\\" + file_name_without_extension + f"_DIG{i}.tmp")
+if os.path.exists(saveFileNames[0]):
+    for dnnIndex in range(len(dnns)):
+        dnns[dnnIndex] = tf.keras.models.load_model(saveFileNames[dnnIndex])
+        print(f"载入模型文件: {saveFileNames[dnnIndex]}")
 else:
-    print(f"文件 {file_path} 不存在，无需删除。")
+    print(f"文件 {saveFileNames[0]} 不存在，无需删除。")
 
 
 # 训练模型
 loss_history = []
 batchSize = 1000
 #初始化图形
-plt.ion()
-fig, ax = plt.subplots()
-plt.title("Training Loss")
-plt.xlabel("Batch")
-plt.ylabel("Loss")
-line, = ax.plot([], []) 
+#plt.ion()
+fig, axs = plt.subplots(3, 2, figsize=(20, 10))  # 创建六个子图
+axs = axs.flatten()  # 将axs数组扁平化，便于索引
+lines = [ax.plot([], [])[0] for ax in axs]  # 创建每个子图的line对象
+dig = 0
+for ax in axs:
+    ax.set_title(f'DIG {dig}')
+    ax.set_xlabel('Batch')
+    ax.set_ylabel('Loss')
+    dig+=1
+plt.tight_layout()
+plt.show(block=False)
+
 for i in range(0, 5000):
     tIn = np.zeros((batchSize, 60), dtype=float)
-    tOut = np.zeros((batchSize, 60), dtype=float)
+    tOut =[np.zeros((batchSize, 10), dtype=float) for _ in range(6)]
     for batchIndex in range(0, batchSize):  # 堆叠一批batchSize个乘法的例子
         a = np.random.randint(0, 999)
         b = np.random.randint(0, 999)
@@ -147,30 +134,38 @@ for i in range(0, 5000):
         for n in range(0, 3):
             tIn[batchIndex, getIntDigit(b, n) + n * 10 + 30] = 1
         for n in range(0, 6):
-            tOut[batchIndex, getIntDigit(a * b, n) + n * 10] = 1
+            tOut[n][batchIndex, getIntDigit(a * b, n)] = 1
 
     print(f"产生数据完成，开始训练，第{i}批")
 
     # 0：不显示训练进度信息。
     # 1：显示一个进度条，每个训练周期结束时显示一行训练进度信息。
     # 2：每个训练周期结束时显示一行训练进度信息，包括每个 epoch 的平均损失和度量指
-    dnn.fit(tIn, tOut, epochs=10, verbose=0)
-    
-    #收集loss
-    loss = dnn.evaluate(tIn, tOut)
-    loss_history.append(loss)
-    print(f"Loss: {loss}")
+    #dnn.fit(tIn, tOut, epochs=10, verbose=0)
+    hisItem = []
+    for dnnIndex in range(len(dnns)):
+        dnns[dnnIndex].fit(tIn, tOut[dnnIndex],
+            epochs=100,
+            batch_size=batchSize,
+            verbose=0)
+        loss = dnns[dnnIndex].evaluate(tIn, tOut[dnnIndex])
+        hisItem.append(loss[0])
+    loss_history.append(hisItem)
+    print(f"Loss: {hisItem}")
     
     #图形显示loss
-    line.set_xdata(range(len(loss_history)))  # 更新线的X数据
-    line.set_ydata([row[0] for row in loss_history])  # 更新线的数据
-    ax.relim()  # 重新计算轴的限制
-    ax.autoscale_view(True, True, True)  # 自动缩放
-    fig.canvas.draw()  # 更新画布
-    fig.canvas.flush_events()  # 处理GUI事件
-    plt.pause(0.1)  # 暂停一会儿，以便更新图表
+    for i in range(6):
+        lines[i].set_xdata(range(len(loss_history)))
+        lines[i].set_ydata([row[i] for row in loss_history])
+        axs[i].relim()
+        axs[i].autoscale_view(True, True, True)
 
-    dnn.save(file_path)  # 根据实际模型文件名修改
+    fig.canvas.draw()
+    fig.canvas.flush_events()
+    
+    # 根据实际模型文件名修改
+    for dnnIndex in range(len(dnns)):
+        dnns[dnnIndex].save(saveFileNames[dnnIndex])
 
     # 验证模型
     tIn = np.zeros((5, 60), dtype=float)
@@ -185,11 +180,14 @@ for i in range(0, 5000):
             tIn[stackIndex, getIntDigit(a, n) + n * 10] = 1
         for n in range(0, 3):
             tIn[stackIndex, getIntDigit(b, n) + n * 10 + 30] = 1
-    pred = dnn.predict(tIn)
+    pred = []
+    for dnnIndex in range(len(dnns)):
+        pred.append(dnns[dnnIndex].predict(tIn))
+
     for stackIndex in range(0, 5):
         for n in range(0, 6):
             tOutReal[stackIndex, 0] += (10**n) * np.argmax(
-                pred[stackIndex, n * 10 : (n + 1) * 10]
+                pred[n][stackIndex, :]
             )
     for stackIndex in range(0, 5):  # 仅验证5个
         print(
